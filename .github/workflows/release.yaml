@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     outputs:
       artifact-paths: ${{ steps.list-artifacts.outputs.paths }}
     steps:
