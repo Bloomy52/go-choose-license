@@ -19,6 +19,13 @@ You can run them by unzipping the executable and running it in the terminal by d
 ./go-choose-license
 ```
 
+> [!WARNING]
+> macOS Users will need to use the following sequence in order to open the binary since I don't pay for the Apple Developer Certificate.
+> 1. Right-click (or Control-click) the `go-choose-license` binary in Finder.
+> 2. Select **Open**.
+> 3. Click **Open Anyway** in the dialog that appears.
+> 4. Once approved this way, you can also launch it from Terminal afterward.
+
 ## Installation
 Don't want to download the binaries, I get it. Sometimes it is more fun to just build the software
 from source. Or just download it via `go install`.
