@@ -19,13 +19,16 @@ You can run them by unzipping the executable and running it in the terminal in t
 ./go-choose-license
 ```
 > [!WARNING]
-> macOS Users will need to use the following sequence in order to open the binary since I don't pay for the Apple Developer Certificate.
+> macOS Users will need to use the following sequence in order to open the binary since I don't pay for the Apple Developer Certificate and Gatekeeper doesn't like that.
 > ```bash
 > xattr -d com.apple.quarantine ./go-choose-license
 > ```
 
 Want to verify that the binaries have an appropriate attestation? You can do that using the GitHub CLI?
 You can find information on how to verify the binaries on the [Releases](https://github.com/Bloomy52/go-choose-license/releases) Page.
+
+> [!NOTE]
+> Safari will sometimes automatically unzip the archive files which makes the GitHub Attestation Verification fail. Use `curl -LO <asset-url>` to download the file without automatic unzipping.
 
 ## Installation
 Don't want to download the binaries from GitHub Releases, I get it. Sometimes it is more fun to just build the software
