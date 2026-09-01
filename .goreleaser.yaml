@@ -1,0 +1,64 @@
+version: 2
+
+project_name: go-choose-license
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: go-choose-license
+    binary: go-choose-license
+    main: ./main.go
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+
+release:
+  github:
+    owner: Bloomy52
+    name: go-choose-license
+  draft: false
+  prerelease: auto
+  footer: |
+    ## Verifying your download
+
+    Every release includes a `checksums.txt` file listing SHA-256 hashes for all archives.
+    This release was built via GitHub Actions, which also attaches a build provenance
+    attestation you can verify with the GitHub CLI:
+
+    ```
+    gh attestation verify <downloaded-file> --owner Bloomy52
+    ```
