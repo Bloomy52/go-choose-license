@@ -6,8 +6,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"go-choose-license/internal/license"
-	"go-choose-license/internal/ui"
+	"github.com/Bloomy52/go-choose-license/internal/license"
+	"github.com/Bloomy52/go-choose-license/internal/ui"
 )
 
 func main() {
