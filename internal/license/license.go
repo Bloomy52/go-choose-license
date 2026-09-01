@@ -52,21 +52,21 @@ func LoadRegistry() (*Registry, error) {
 
 	// Summaries from planning docs
 	summaries := map[string]string{
-		"mit":          "Simple & Popular License, Requires Copyright & Notice Preserved, Warranty Disclaimed",
-		"apache-2.0":   "Popular for Businesses, Explicit Patent Grant, Copyright & Notice Preserved, Warranty Disclaimed, State Changes",
-		"bsd-3-clause": "Popular for Academics, Non-Endorsement Clause, Copyright & Notice Preserved, Warranty Disclaimed",
-		"bsd-2-clause": "Popular for Academics, Requires Copyright & Notice Preserved, Warranty Disclaimed",
-		"unlicense":    "Public Domain Dedication, Warranty Disclaimed",
-		"bsd0":         "No Conditions Present, Warranty Disclaimed",
-		"lgpl-2.1":     "Used mainly for libraries, usage in libraries does not require release, modification requires release",
-		"lgpl-3.0":     "Updated weak copyleft compatible with GPLv3",
-		"mpl-2.0":      "File Level Copyleft",
-		"epl-2.0":      "File Level Copyleft, popular in Eclipse ecosystem",
-		"gpl-2.0":      "Source Code Modifications Released Under GPLv2, Tivoization Allowed",
-		"gpl-3.0":      "Extension to GPLv2, Anti-Tivoization Clause, Explicit Patent Grant",
-		"agpl-3.0":     "Removes Network Distribution/SaaS Source Code Distribution Loophole",
-		"artistic-2.0": "Permissive/Copyleft hybrid popular in Perl ecosystem",
-		"postgresql":   "Liberal permissive license similar to MIT/BSD",
+		"mit":          "Do anything you want, just keep the copyright notice.",
+		"apache-2.0":   "Permissive, business-friendly license with an explicit patent grant.",
+		"bsd-3-clause": "Permissive like MIT, but you can't use the authors' names to endorse your product.",
+		"bsd-2-clause": "Permissive license, just keep the copyright notice.",
+		"unlicense":    "Public domain — no rights reserved, no attribution needed.",
+		"bsd0":         "Public domain-style license with zero conditions.",
+		"lgpl-2.1":     "You can link to this library freely, but changes to the library itself must be shared.",
+		"lgpl-3.0":     "Like LGPL-2.1, but updated to match GPLv3's terms.",
+		"mpl-2.0":      "Changes to MPL-licensed files must be shared, but you can mix it with proprietary code.",
+		"epl-2.0":      "File-level copyleft with a patent grant, common in the Eclipse ecosystem.",
+		"gpl-2.0":      "Any code you distribute based on this must also be open-sourced under GPL-2.0.",
+		"gpl-3.0":      "Like GPL-2.0, but adds patent protection and blocks hardware lockdown (Tivoization).",
+		"agpl-3.0":     "Like GPL-3.0, but also covers software used over a network, like SaaS.",
+		"artistic-2.0": "Permissive license popular in Perl, with some copyleft-like conditions on modifications.",
+		"postgresql":   "Permissive license nearly identical to MIT or BSD.",
 	}
 
 	for i, lic := range lf.Licenses {
