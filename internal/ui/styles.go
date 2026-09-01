@@ -4,15 +4,15 @@ import "github.com/charmbracelet/lipgloss"
 
 // Colors palette - Vibrant, modern, fun yet professional
 var (
-	ColorPrimary   = lipgloss.Color("#7D56F4") // Purple
-	ColorSecondary = lipgloss.Color("#00D2FF") // Cyan
-	ColorAccent    = lipgloss.Color("#FF79C6") // Pink / Magenta
-	ColorSuccess   = lipgloss.Color("#50FA7B") // Green
-	ColorWarning   = lipgloss.Color("#FFB86C") // Orange
-	ColorSubtle    = lipgloss.Color("#6272A4") // Muted Blue/Gray
-	ColorBgDark    = lipgloss.Color("#21222C") // Dark background
-	ColorFgLight   = lipgloss.Color("#F8F8F2") // Crisp White
-	ColorCardBg    = lipgloss.Color("#282A36") // Card Background
+	ColorPrimary   = lipgloss.Color("#FF4365") // Hot coral-red
+	ColorSecondary = lipgloss.Color("#FFD23F") // Electric yellow
+	ColorAccent    = lipgloss.Color("#00F5D4") // Bright spearmint/teal
+	ColorSuccess   = lipgloss.Color("#06D6A0") // Vivid green,
+	ColorWarning   = lipgloss.Color("#FFD23F") // reuse secondary
+	ColorSubtle    = lipgloss.Color("#9494B8") // Lavender-gray
+	ColorBgDark    = lipgloss.Color("#0D1321") // Deep navy-black
+	ColorFgLight   = lipgloss.Color("#E8E6F0") // Soft lavender-white
+	ColorCardBg    = lipgloss.Color("#151B2E") // Card background
 )
 
 // Styles
