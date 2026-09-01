@@ -14,17 +14,16 @@ This program is simple, but genius.
 
 ## Quick Start
 We have released downloadable binaries for macOS, Windows, and Linux for both `amd64` and `arm64` archetectures. 
-You can run them by unzipping the executable and running it in the terminal by doing
+You can run them by unzipping the executable and running it in the terminal in the unzipped directory
 ```bash
 ./go-choose-license
 ```
 
 > [!WARNING]
 > macOS Users will need to use the following sequence in order to open the binary since I don't pay for the Apple Developer Certificate.
-> 1. Right-click (or Control-click) the `go-choose-license` binary in Finder.
-> 2. Select **Open**.
-> 3. Click **Open Anyway** in the dialog that appears.
-> 4. Once approved this way, you can also launch it from Terminal afterward.
+> ```bash
+> xattr -d com.apple.quarantine ./go-choose-license
+> ```
 
 ## Installation
 Don't want to download the binaries, I get it. Sometimes it is more fun to just build the software
@@ -39,6 +38,11 @@ The following instructions assume you have installed `Go` and have it set up cor
 You can install `go-choose-license` by running the following command in the terminal:
 ```bash
 go install github.com/Bloomy52/go-choose-license@latest
+```
+You will need to make sure that your `$GOPATH/bin` has been added to `PATH` using the following command:
+```bash
+export PATH=$PATH:$(go env GOPATH)/bin > ~/.bashrc #if using bash
+export PATH=$PATH:$(go env GOPATH)/bin > ~/.zshrc #if using zsh
 ```
 
 ### Building From Source
