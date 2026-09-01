@@ -13,7 +13,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"go-choose-license/internal/license"
+	"github.com/Bloomy52/go-choose-license/internal/license"
 )
 
 type State int

@@ -7,8 +7,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"go-choose-license/internal/license"
-	"go-choose-license/internal/ui"
+	"github.com/Bloomy52/go-choose-license/internal/license"
+	"github.com/Bloomy52/go-choose-license/internal/ui"
 )
 
 func TestQuestionnaireNavigation(t *testing.T) {

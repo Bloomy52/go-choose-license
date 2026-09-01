@@ -3,7 +3,7 @@ package license_test
 import (
 	"testing"
 
-	"go-choose-license/internal/license"
+	"github.com/Bloomy52/go-choose-license/internal/license"
 )
 
 func TestLoadRegistry(t *testing.T) {
