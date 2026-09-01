@@ -1,4 +1,4 @@
-module go-choose-license
+module github.com/Bloomy52/go-choose-license
 
 go 1.26
 
