@@ -18,16 +18,18 @@ You can run them by unzipping the executable and running it in the terminal in t
 ```bash
 ./go-choose-license
 ```
-
 > [!WARNING]
 > macOS Users will need to use the following sequence in order to open the binary since I don't pay for the Apple Developer Certificate.
 > ```bash
 > xattr -d com.apple.quarantine ./go-choose-license
 > ```
 
+Want to verify that the binaries have an appropriate attestation? You can do that using the GitHub CLI?
+You can find information on how to verify the binaries on the [Releases](https://github.com/Bloomy52/go-choose-license/releases) Page.
+
 ## Installation
-Don't want to download the binaries, I get it. Sometimes it is more fun to just build the software
-from source. Or just download it via `go install`.
+Don't want to download the binaries from GitHub Releases, I get it. Sometimes it is more fun to just build the software
+from source. Or just download it via `go install`. Your choice.
 
 In order to install the software, you need to have `Go` installed.
 You can find instructions on downloading `Go` in the Installation Documentation [INSTALL.md](docs/INSTALL.md)
@@ -39,10 +41,29 @@ You can install `go-choose-license` by running the following command in the term
 ```bash
 go install github.com/Bloomy52/go-choose-license@latest
 ```
-You will need to make sure that your `$GOPATH/bin` has been added to `PATH` using the following command:
+Then you can run the app using the following command:
 ```bash
-export PATH=$PATH:$(go env GOPATH)/bin > ~/.bashrc #if using bash
-export PATH=$PATH:$(go env GOPATH)/bin > ~/.zshrc #if using zsh
+go-choose-license
 ```
+> [!NOTE]
+> You will need to make sure that your `$GOPATH/bin` has been added to `PATH` using the following commands found in the [INSTALL.md](docs/INSTALL.md) file.
+
 
 ### Building From Source
+Want to build the package from source? We have a solution! You can follow the commands below to build the package from source. 
+1. Clone the GitHub Repository & cd into the directory
+```bash
+git clone https://github.com/Bloomy52/go-choose-license.git
+cd go-choose-license
+```
+2. Use `go build` to compile the app
+```bash
+go build -o go-choose-license .
+```
+3. Run the app
+```bash
+./go-choose-license
+```
+
+## License
+This project is licensed under the Apache 2.0 License. See [LICENSE](LICENSE) for full license text.
