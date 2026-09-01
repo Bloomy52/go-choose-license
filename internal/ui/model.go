@@ -542,7 +542,7 @@ func (m Model) View() string {
 }
 
 func (m Model) renderHeader(title string, subtitle string) string {
-	banner := BannerBadge.Render("GO LICENSE CHOOSER") + BannerStyle.Render(title)
+	banner := BannerBadge.Render("GO CHOOSE YOUR LICENSE") + BannerStyle.Render(title)
 	if subtitle != "" {
 		banner += "\n" + BannerSubtitle.Render(subtitle)
 	}
