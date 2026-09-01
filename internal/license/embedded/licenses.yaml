@@ -1,0 +1,79 @@
+# licenses.yaml
+# Copyright (C) 2026 Louie Bloomberg
+# SPDX-License-Identifier: Apache-2.0
+
+licenses:
+  - id: agpl-3.0
+    name: "GNU Affero General Public License v3.0"
+    file: licenses/agpl-3.0.txt
+    permissive: false
+
+  - id: apache-2.0
+    name: "Apache License 2.0"
+    file: licenses/apache-2.0.txt
+    permissive: true
+
+  - id: artistic-2.0
+    name: "Artistic License 2.0"
+    file: licenses/artistic-2.0.txt
+    permissive: true
+
+  - id: bsd-2-clause
+    name: "BSD 2-Clause \"Simplified\" License"
+    file: licenses/bsd-2-clause.txt
+    permissive: true
+
+  - id: bsd-3-clause
+    name: "BSD 3-Clause \"New\" or \"Revised\" License"
+    file: licenses/bsd-3-clause.txt
+    permissive: true
+
+  - id: bsd0
+    name: "BSD Zero Clause License"
+    file: licenses/bsd0.txt
+    permissive: true
+
+  - id: epl-2.0
+    name: "Eclipse Public License 2.0"
+    file: licenses/epl-2.0.txt
+    permissive: false
+
+  - id: gpl-2.0
+    name: "GNU General Public License v2.0"
+    file: licenses/gpl-2.0.txt
+    permissive: false
+
+  - id: gpl-3.0
+    name: "GNU General Public License v3.0"
+    file: licenses/gpl-3.0.txt
+    permissive: false
+
+  - id: lgpl-2.1
+    name: "GNU Lesser General Public License v2.1"
+    file: licenses/lgpl-2.1.txt
+    permissive: false
+
+  - id: lgpl-3.0
+    name: "GNU Lesser General Public License v3.0"
+    file: licenses/lgpl-3.0.txt
+    permissive: false
+
+  - id: mit
+    name: "MIT License"
+    file: licenses/mit.txt
+    permissive: true
+
+  - id: mpl-2.0
+    name: "Mozilla Public License 2.0"
+    file: licenses/mpl-2.0.txt
+    permissive: false
+
+  - id: postgresql
+    name: "PostgreSQL License"
+    file: licenses/postgresql.txt
+    permissive: true
+
+  - id: unlicense
+    name: "The Unlicense"
+    file: licenses/unlicense.txt
+    permissive: true
