@@ -725,7 +725,7 @@ func (m Model) viewResult() string {
 	card := m.renderCard(sb.String())
 
 	actions := lipgloss.NewStyle().Foreground(ColorFgLight).Render(fmt.Sprintf(
-		"Actions:\n  %s Generate LICENSE file\n  %s View full license text\n  %s Go back\n  %s Main menu",
+		"\nActions:\n  %s Generate LICENSE file\n  %s View full license text\n  %s Go back\n  %s Main menu",
 		KeyStyle.Render("[G / Enter]"),
 		KeyStyle.Render("[V]"),
 		KeyStyle.Render("[B]"),
