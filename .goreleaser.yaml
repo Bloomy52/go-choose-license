@@ -52,6 +52,7 @@ release:
     name: go-choose-license
   draft: false
   prerelease: auto
+  replace_existing_artifacts: true
   footer: |
     ## Verifying your download
 
