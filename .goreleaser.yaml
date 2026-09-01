@@ -66,3 +66,4 @@ release:
     ```
     gh attestation verify <downloaded-file> --owner Bloomy52
     ```
+    If you don't have the `gh` CLI installed, you can download it here: https://github.com/cli/cli#installation'
