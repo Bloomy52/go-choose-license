@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 
 	"go-choose-license/internal/license"
 	"go-choose-license/internal/ui"
@@ -32,7 +33,7 @@ func TestQuestionnaireNavigation(t *testing.T) {
 	if !strings.Contains(viewQ1, "Question 1 of 5") {
 		t.Errorf("Expected Question 1 of 5 in view, got: %s", viewQ1)
 	}
-	if !strings.Contains(viewQ1, "closed-source / proprietary works") {
+	if !strings.Contains(viewQ1, "closed-source") {
 		t.Errorf("Expected Q1 title in view")
 	}
 
@@ -74,5 +75,27 @@ func TestLanguageSelectFilter(t *testing.T) {
 	}
 	if !strings.Contains(viewLang, "Python") || !strings.Contains(viewLang, "Go") {
 		t.Errorf("Expected languages listed in view")
+	}
+}
+
+func TestResultCardMaxWidth(t *testing.T) {
+	reg, err := license.LoadRegistry()
+	if err != nil {
+		t.Fatalf("Failed to load registry: %v", err)
+	}
+
+	model := ui.InitialModel(reg)
+
+	// Update window size with width 60
+	m, _ := model.Update(tea.WindowSizeMsg{Width: 60, Height: 24})
+	mRes := m.(ui.Model)
+
+	viewStr := mRes.View()
+	lines := strings.Split(viewStr, "\n")
+	for _, l := range lines {
+		w := lipgloss.Width(l)
+		if w > 60 {
+			t.Errorf("Line width %d exceeds target width 60 in line: %q", w, l)
+		}
 	}
 }

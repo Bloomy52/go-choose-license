@@ -120,8 +120,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
-		m.viewport.Width = msg.Width - 6
-		m.viewport.Height = msg.Height - 10
+		vpWidth := msg.Width - 10
+		if vpWidth < 10 {
+			vpWidth = 10
+		}
+		vpHeight := msg.Height - 10
+		if vpHeight < 5 {
+			vpHeight = 5
+		}
+		m.viewport.Width = vpWidth
+		m.viewport.Height = vpHeight
 		return m, nil
 
 	case tea.KeyMsg:
@@ -352,7 +360,12 @@ func (m Model) updateResult(msg tea.Msg) (Model, tea.Cmd) {
 				m.chosenLicense = m.recommendations[m.resultCursor]
 			}
 		case "v", "V":
-			m.viewport.SetContent(m.chosenLicense.Text)
+			vpWidth := m.viewport.Width
+			if vpWidth <= 0 {
+				vpWidth = 70
+			}
+			wrapped := lipgloss.NewStyle().MaxWidth(vpWidth).Render(m.chosenLicense.Text)
+			m.viewport.SetContent(wrapped)
 			m.viewport.GotoTop()
 			m.state = StateViewText
 		case "g", "G", "enter":
@@ -473,6 +486,35 @@ func (m Model) updateSuccess(msg tea.Msg) (Model, tea.Cmd) {
 	return m, nil
 }
 
+func (m Model) renderAppContainer(body string) string {
+	if m.width > 0 {
+		return AppContainerStyle.MaxWidth(m.width).Render(body)
+	}
+	return AppContainerStyle.Render(body)
+}
+
+func (m Model) renderCard(content string) string {
+	if m.width > 0 {
+		maxW := m.width - 4
+		if maxW < 20 {
+			maxW = 20
+		}
+		return CardStyle.MaxWidth(maxW).Render(content)
+	}
+	return CardStyle.Render(content)
+}
+
+func (m Model) renderSuccessCard(content string) string {
+	if m.width > 0 {
+		maxW := m.width - 4
+		if maxW < 20 {
+			maxW = 20
+		}
+		return SuccessCardStyle.MaxWidth(maxW).Render(content)
+	}
+	return SuccessCardStyle.Render(content)
+}
+
 // View Functions
 func (m Model) View() string {
 	var body string
@@ -496,7 +538,7 @@ func (m Model) View() string {
 		body = m.viewSuccess()
 	}
 
-	return AppContainerStyle.Render(body)
+	return m.renderAppContainer(body)
 }
 
 func (m Model) renderHeader(title string, subtitle string) string {
@@ -531,7 +573,7 @@ func (m Model) viewMenu() string {
 		}
 	}
 
-	card := CardStyle.Render(sb.String())
+	card := m.renderCard(sb.String())
 	help := HelpStyle.Render(fmt.Sprintf("%s move • %s select • %s quit", KeyStyle.Render("↑/↓ / j/k"), KeyStyle.Render("Enter"), KeyStyle.Render("q")))
 
 	return h + card + help
@@ -565,7 +607,7 @@ func (m Model) viewQuestionnaire() string {
 		}
 	}
 
-	card := CardStyle.Render(sb.String())
+	card := m.renderCard(sb.String())
 	help := HelpStyle.Render(fmt.Sprintf("%s navigate • %s confirm • %s back • %s main menu", KeyStyle.Render("↑/↓"), KeyStyle.Render("Enter"), KeyStyle.Render("b / Backspace"), KeyStyle.Render("q")))
 
 	return h + card + help
@@ -607,7 +649,7 @@ func (m Model) viewLanguageSelect() string {
 		}
 	}
 
-	card := CardStyle.Render(sb.String())
+	card := m.renderCard(sb.String())
 	help := HelpStyle.Render(fmt.Sprintf("%s filter • %s/%s move • %s choose • %s menu", KeyStyle.Render("Type"), KeyStyle.Render("↑/↓"), KeyStyle.Render("Ctrl+n/p"), KeyStyle.Render("Enter"), KeyStyle.Render("Esc")))
 
 	return h + card + help
@@ -636,7 +678,7 @@ func (m Model) viewCatalog() string {
 		}
 	}
 
-	card := CardStyle.Render(sb.String())
+	card := m.renderCard(sb.String())
 	help := HelpStyle.Render(fmt.Sprintf("%s move • %s select • %s main menu", KeyStyle.Render("↑/↓ / j/k"), KeyStyle.Render("Enter"), KeyStyle.Render("b / Esc")))
 
 	return h + card + help
@@ -680,7 +722,7 @@ func (m Model) viewResult() string {
 		}
 	}
 
-	card := CardStyle.Render(sb.String())
+	card := m.renderCard(sb.String())
 
 	actions := lipgloss.NewStyle().Foreground(ColorFgLight).Render(fmt.Sprintf(
 		"Actions:\n  %s Generate LICENSE file\n  %s View full license text\n  %s Go back\n  %s Main menu",
@@ -696,7 +738,7 @@ func (m Model) viewResult() string {
 func (m Model) viewViewText() string {
 	h := m.renderHeader(fmt.Sprintf("Full License Text — %s", m.chosenLicense.Name), "Scroll with arrow keys or PgUp/PgDn")
 
-	content := CardStyle.Render(m.viewport.View())
+	content := m.renderCard(m.viewport.View())
 	help := HelpStyle.Render(fmt.Sprintf("%s scroll • %s back to recommendation", KeyStyle.Render("↑/↓ / PgUp/PgDn"), KeyStyle.Render("b / Esc / q")))
 
 	return h + content + help
@@ -728,7 +770,7 @@ func (m Model) viewGenerate() string {
 		sb.WriteString(lipgloss.NewStyle().Foreground(ColorWarning).Render("Error: "+m.errMessage) + "\n")
 	}
 
-	card := CardStyle.Render(sb.String())
+	card := m.renderCard(sb.String())
 	help := HelpStyle.Render(fmt.Sprintf("%s switch fields • %s write LICENSE file • %s cancel", KeyStyle.Render("Tab / ↑/↓"), KeyStyle.Render("Enter"), KeyStyle.Render("Esc")))
 
 	return h + card + help
@@ -743,7 +785,7 @@ func (m Model) viewSuccess() string {
 	sb.WriteString(QuestionSubtitleStyle.Render(fmt.Sprintf("License: %s", m.chosenLicense.Name)) + "\n")
 	sb.WriteString(QuestionSubtitleStyle.Render(fmt.Sprintf("Year: %s | Author: %s", m.yearInput.Value(), m.authorInput.Value())) + "\n")
 
-	card := SuccessCardStyle.Render(sb.String())
+	card := m.renderSuccessCard(sb.String())
 	help := HelpStyle.Render(fmt.Sprintf("Press %s or %s to return to main menu", KeyStyle.Render("Enter"), KeyStyle.Render("q")))
 
 	return h + card + help
