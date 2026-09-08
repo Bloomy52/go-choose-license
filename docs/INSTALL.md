@@ -12,7 +12,7 @@ macOS & Linux Users:
 ```bash
 brew install go
 ```
-Windows Users (I would run in an Elevated Prompt aka `Run As Administrator`)
+Windows Users (I recommend running it in an Elevated Prompt aka `Run As Administrator`)
 ```powershell
 winget install --id Golang.Go --source winget --silent
 ```
