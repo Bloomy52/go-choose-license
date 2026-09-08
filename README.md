@@ -1,5 +1,6 @@
 # Go Choose Your License
 **Go Choose Your License** ("go-choose-license") is a Go CLI app that helps you choose an open-source license for your next big project.
+This project is mostly intended for newer developers who are just starting out in the open-source world, but this project can be used by anyone.
 
 ## Why This Exists
 As an open-source developer, I know how many open-source licenses there are. 
@@ -7,10 +8,17 @@ I have used a multitude of different licenses based on my projects.
 I remember when I was first starting out, I had no idea what license to use for my project,
 and while ways to help choose a license did exist, nobody had a simple way for someone to 
 choose a license for my next project. 
-So, I decided to build my own, which is why we now have `go-choose-license`.
+So, I decided to build my own, which is why we now have `go-choose-license`, so developers
+don't have decision paralysis when it comes to choosing a license for their next project.
 
 ## How This Program Works
-This program is simple, but genius.
+This program is simple, but genius. It has three options users can choose from. 
+1) Choose a license based on your preferences via our guided questionnaire.
+2) Choose a license based on the community norms of the programming language you are using for your project.
+3) Use our curated list of licenses to choose from.
+
+Once you have selected a license, the program will help fill in specific user information for
+the copyright and then add it to your project's repository. 
 
 ## Quick Start
 We have released downloadable binaries for macOS, Windows, and Linux for both `amd64` and `arm64` archetectures. 
@@ -24,7 +32,7 @@ You can run them by unzipping the executable and running it in the terminal in t
 > xattr -d com.apple.quarantine ./go-choose-license
 > ```
 
-Want to verify that the binaries have an appropriate attestation? You can do that using the GitHub CLI?
+Want to verify that the binaries have an appropriate attestation? You can do that using the GitHub CLI.
 You can find information on how to verify the binaries on the [Releases](https://github.com/Bloomy52/go-choose-license/releases) Page.
 
 > [!NOTE]
@@ -39,7 +47,7 @@ You can find instructions on downloading `Go` in the Installation Documentation 
 
 The following instructions assume you have installed `Go` and have it set up correctly.
 
-### Using `go install`
+### Using ``go install`` (Recommended)
 You can install `go-choose-license` by running the following command in the terminal:
 ```bash
 go install github.com/Bloomy52/go-choose-license@latest
