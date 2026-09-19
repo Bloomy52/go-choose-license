@@ -18,7 +18,7 @@ func TestLoadRegistry(t *testing.T) {
 	}
 
 	expectedIDs := []string{
-		"mit", "apache-2.0", "bsd-3-clause", "bsd-2-clause", "unlicense",
+		"mit", "apache-2.0", "bsd-3-clause", "bsd-2-clause", "isc", "unlicense",
 		"bsd0", "lgpl-2.1", "lgpl-3.0", "mpl-2.0", "epl-2.0",
 		"gpl-2.0", "gpl-3.0", "agpl-3.0", "artistic-2.0", "postgresql",
 	}
