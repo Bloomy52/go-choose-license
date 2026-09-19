@@ -56,6 +56,7 @@ func LoadRegistry() (*Registry, error) {
 		"apache-2.0":   "Permissive, business-friendly license with an explicit patent grant.",
 		"bsd-3-clause": "Permissive like MIT, but you can't use the authors' names to endorse your product.",
 		"bsd-2-clause": "Permissive license, just keep the copyright notice.",
+		"isc":          "Permissive license, similar to MIT but with simpler language. `npm init` default.",
 		"unlicense":    "Public domain — no rights reserved, no attribution needed.",
 		"bsd0":         "Public domain-style license with zero conditions.",
 		"lgpl-2.1":     "You can link to this library freely, but changes to the library itself must be shared.",
