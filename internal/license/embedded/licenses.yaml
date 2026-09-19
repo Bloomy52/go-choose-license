@@ -48,6 +48,12 @@ licenses:
     file: licenses/gpl-3.0.txt
     permissive: false
 
+  - id: isc
+    name: "ISC License"
+    file: licenses/isc.txt
+    permissive: true
+
+
   - id: lgpl-2.1
     name: "GNU Lesser General Public License v2.1"
     file: licenses/lgpl-2.1.txt
