@@ -1,0 +1,33 @@
+command "git"
+command "go"
+
+
+file "go.mod"
+file "main.go"
+file "go.sum"
+
+file "internal/license/license.go"
+file "internal/license/license_test.go"
+file "internal/license/questions.go"
+
+file "internal/ui/model.go"
+file "internal/ui/model_test.go"
+file "internal/ui/styles.go"
+
+file "internal/license/embedded/licenses.yaml"
+file "internal/license/embedded/licenses/agpl-3.0.txt"
+file "internal/license/embedded/licenses/apache-2.0.txt"
+file "internal/license/embedded/licenses/artistic-2.0.txt"
+file "internal/license/embedded/licenses/bsd0.txt"
+file "internal/license/embedded/licenses/bsd-2-clause.txt"
+file "internal/license/embedded/licenses/bsd-3-clause.txt"
+file "internal/license/embedded/licenses/epl-2.0.txt"
+file "internal/license/embedded/licenses/gpl-2.0.txt"
+file "internal/license/embedded/licenses/gpl-3.0.txt"
+file "internal/license/embedded/licenses/isc.txt"
+file "internal/license/embedded/licenses/lgpl-2.1.txt"
+file "internal/license/embedded/licenses/lgpl-3.0.txt"
+file "internal/license/embedded/licenses/mit.txt"
+file "internal/license/embedded/licenses/mpl-2.0.txt"
+file "internal/license/embedded/licenses/postgresql.txt"
+file "internal/license/embedded/licenses/unlicense.txt"
