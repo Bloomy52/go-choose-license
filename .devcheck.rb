@@ -1,3 +1,6 @@
+name "Go Choose Your License"
+id "go-choose-license"
+
 command "git"
 command "go"
 
