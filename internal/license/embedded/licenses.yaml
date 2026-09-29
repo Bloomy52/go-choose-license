@@ -13,6 +13,11 @@ licenses:
     file: licenses/apache-2.0.txt
     permissive: true
 
+  - id: artistic-1.0-perl
+    name: "Artistic License 1.0 (Perl)"
+    file: licenses/artistic-1.0-perl.txt
+    permissive: true
+
   - id: artistic-2.0
     name: "Artistic License 2.0"
     file: licenses/artistic-2.0.txt
@@ -36,6 +41,11 @@ licenses:
   - id: epl-2.0
     name: "Eclipse Public License 2.0"
     file: licenses/epl-2.0.txt
+    permissive: false
+
+  - id: gpl-1.0
+    name: "GNU General Public License v1.0"
+    file: licenses/gpl-1.0.txt
     permissive: false
 
   - id: gpl-2.0
