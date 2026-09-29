@@ -78,6 +78,11 @@ licenses:
     file: licenses/postgresql.txt
     permissive: true
 
+  - id: tcl
+    name: "Tcl/Tk License"
+    file: licenses/tcl.txt
+    permissive: true
+
   - id: unlicense
     name: "The Unlicense"
     file: licenses/unlicense.txt
