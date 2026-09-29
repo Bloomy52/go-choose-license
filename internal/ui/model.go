@@ -22,6 +22,7 @@ const (
 	StateMenu State = iota
 	StateQuestionnaire
 	StateLanguageSelect
+	StatePackageManagerSelect
 	StateCatalog
 	StateResult
 	StateViewText
@@ -39,15 +40,15 @@ type Model struct {
 	// Selection cursor
 	menuCursor   int
 	optCursor    int
-	langCursor   int
+	normCursor   int
 	catCursor    int
 	resultCursor int
 
 	// Data selections
-	selectedLanguage license.LanguageNorm
-	recommendations  []license.License
-	chosenLicense    license.License
-	prevState        State
+	selectedNorm    license.LanguageNorm
+	recommendations []license.License
+	chosenLicense   license.License
+	prevState       State
 
 	// Inputs & Viewport
 	searchInput textinput.Model
@@ -144,8 +145,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m, cmd = m.updateMenu(msg)
 	case StateQuestionnaire:
 		m, cmd = m.updateQuestionnaire(msg)
-	case StateLanguageSelect:
-		m, cmd = m.updateLanguageSelect(msg)
+	case StateLanguageSelect, StatePackageManagerSelect:
+		m, cmd = m.updateNormSelect(msg)
 	case StateCatalog:
 		m, cmd = m.updateCatalog(msg)
 	case StateResult:
@@ -172,7 +173,7 @@ func (m Model) updateMenu(msg tea.Msg) (Model, tea.Cmd) {
 				m.menuCursor--
 			}
 		case "down", "j":
-			if m.menuCursor < 3 {
+			if m.menuCursor < 4 {
 				m.menuCursor++
 			}
 		case "enter", "space":
@@ -182,15 +183,21 @@ func (m Model) updateMenu(msg tea.Msg) (Model, tea.Cmd) {
 				m.currentQuestionID = license.Q1
 				m.historyStack = nil
 				m.optCursor = 0
-			case 1: // Language
+			case 1, 2: // Language or package manager norms
 				m.state = StateLanguageSelect
-				m.langCursor = 0
+				m.searchInput.Placeholder = "Search programming language..."
+				if m.menuCursor == 2 {
+					m.state = StatePackageManagerSelect
+					m.searchInput.Placeholder = "Search package manager..."
+				}
+				m.searchInput.SetValue("")
+				m.normCursor = 0
 				m.searchInput.Focus()
 				return m, textinput.Blink
-			case 2: // View All Licenses
+			case 3: // View All Licenses
 				m.state = StateCatalog
 				m.catCursor = 0
-			case 3: // Quit
+			case 4: // Quit
 				return m, tea.Quit
 			}
 		case "q":
@@ -251,28 +258,28 @@ func (m Model) updateQuestionnaire(msg tea.Msg) (Model, tea.Cmd) {
 	return m, nil
 }
 
-// Language Select Update
-func (m Model) updateLanguageSelect(msg tea.Msg) (Model, tea.Cmd) {
-	filteredLangs := m.getFilteredLanguages()
+// Language and Package Manager Select Update
+func (m Model) updateNormSelect(msg tea.Msg) (Model, tea.Cmd) {
+	filteredNorms := m.getFilteredNorms()
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "up", "ctrl+p":
-			if m.langCursor > 0 {
-				m.langCursor--
+			if m.normCursor > 0 {
+				m.normCursor--
 			}
 			return m, nil
 		case "down", "ctrl+n":
-			if m.langCursor < len(filteredLangs)-1 {
-				m.langCursor++
+			if m.normCursor < len(filteredNorms)-1 {
+				m.normCursor++
 			}
 			return m, nil
 		case "enter":
-			if len(filteredLangs) > 0 && m.langCursor < len(filteredLangs) {
-				m.selectedLanguage = filteredLangs[m.langCursor]
+			if len(filteredNorms) > 0 && m.normCursor < len(filteredNorms) {
+				m.selectedNorm = filteredNorms[m.normCursor]
 				m.recommendations = nil
-				for _, id := range m.selectedLanguage.LicenseIDs {
+				for _, id := range m.selectedNorm.LicenseIDs {
 					if lic, ok := m.registry.Get(id); ok {
 						m.recommendations = append(m.recommendations, lic)
 					}
@@ -280,7 +287,7 @@ func (m Model) updateLanguageSelect(msg tea.Msg) (Model, tea.Cmd) {
 				if len(m.recommendations) > 0 {
 					m.chosenLicense = m.recommendations[0]
 					m.resultCursor = 0
-					m.prevState = StateLanguageSelect
+					m.prevState = m.state
 					m.state = StateResult
 				}
 			}
@@ -294,14 +301,17 @@ func (m Model) updateLanguageSelect(msg tea.Msg) (Model, tea.Cmd) {
 	var cmd tea.Cmd
 	m.searchInput, cmd = m.searchInput.Update(msg)
 	// reset cursor if input changed
-	if m.langCursor >= len(m.getFilteredLanguages()) {
-		m.langCursor = 0
+	if m.normCursor >= len(m.getFilteredNorms()) {
+		m.normCursor = 0
 	}
 	return m, cmd
 }
 
-func (m Model) getFilteredLanguages() []license.LanguageNorm {
+func (m Model) getFilteredNorms() []license.LanguageNorm {
 	all := license.GetLanguageNorms()
+	if m.state == StatePackageManagerSelect {
+		all = license.GetPackageManagerNorms()
+	}
 	query := strings.TrimSpace(strings.ToLower(m.searchInput.Value()))
 	if query == "" {
 		return all
@@ -524,8 +534,8 @@ func (m Model) View() string {
 		body = m.viewMenu()
 	case StateQuestionnaire:
 		body = m.viewQuestionnaire()
-	case StateLanguageSelect:
-		body = m.viewLanguageSelect()
+	case StateLanguageSelect, StatePackageManagerSelect:
+		body = m.viewNormSelect()
 	case StateCatalog:
 		body = m.viewCatalog()
 	case StateResult:
@@ -558,8 +568,9 @@ func (m Model) viewMenu() string {
 	}{
 		{"1. Interactive Questionnaire", "Answer a few questions to find the license matching your goals"},
 		{"2. Programming Language Norms", "Choose a license based on community conventions for your language"},
-		{"3. Browse All Licenses", "View full catalog of available permissive & copyleft licenses"},
-		{"4. Exit", "Quit application"},
+		{"3. Package Manager Norms", "Choose a license based on community conventions for your package manager"},
+		{"4. Browse All Licenses", "View full catalog of available permissive & copyleft licenses"},
+		{"5. Exit", "Quit application"},
 	}
 
 	var sb strings.Builder
@@ -613,23 +624,29 @@ func (m Model) viewQuestionnaire() string {
 	return h + card + help
 }
 
-func (m Model) viewLanguageSelect() string {
-	h := m.renderHeader("Programming Language Norms", "Filter and select your primary programming language")
+func (m Model) viewNormSelect() string {
+	title, subtitle := "Programming Language Norms", "Filter and select your primary programming language"
+	emptyMessage := "No matching languages found."
+	if m.state == StatePackageManagerSelect {
+		title, subtitle = "Package Manager Norms", "Filter and select your package manager"
+		emptyMessage = "No matching package managers found."
+	}
+	h := m.renderHeader(title, subtitle)
 
 	inputView := InputStyle.Render(m.searchInput.View())
 
-	filtered := m.getFilteredLanguages()
+	filtered := m.getFilteredNorms()
 
 	var sb strings.Builder
 	sb.WriteString(inputView + "\n\n")
 
 	if len(filtered) == 0 {
-		sb.WriteString(OptionDescStyle.Render("No matching languages found.") + "\n")
+		sb.WriteString(OptionDescStyle.Render(emptyMessage) + "\n")
 	} else {
 		maxVisible := 8
 		start := 0
-		if m.langCursor >= maxVisible {
-			start = m.langCursor - maxVisible + 1
+		if m.normCursor >= maxVisible {
+			start = m.normCursor - maxVisible + 1
 		}
 		end := start + maxVisible
 		if end > len(filtered) {
@@ -640,7 +657,7 @@ func (m Model) viewLanguageSelect() string {
 			lang := filtered[i]
 			licenseNames := strings.Join(lang.LicenseIDs, " / ")
 			line := fmt.Sprintf("%-18s → Recommended: %s", lang.Language, strings.ToUpper(licenseNames))
-			if i == m.langCursor {
+			if i == m.normCursor {
 				sb.WriteString(OptionSelectedItemStyle.Render(line) + "\n")
 				sb.WriteString(OptionDescStyle.Render(lang.Note) + "\n")
 			} else {
@@ -717,9 +734,9 @@ func (m Model) viewResult() string {
 
 		sb.WriteString(lipgloss.NewStyle().Bold(true).Foreground(ColorSecondary).Render(lic.Name) + " " + badge + "\n\n")
 		sb.WriteString(QuestionTitleStyle.Render("Summary:") + " " + lic.Summary + "\n\n")
-		if m.selectedLanguage.Language != "" {
-			sb.WriteString(OptionDescStyle.Render(fmt.Sprintf("Community norm for %s: %s", m.selectedLanguage.Language, m.selectedLanguage.Note)) + "\n\n")
-		}
+	}
+	if m.prevState == StateLanguageSelect || m.prevState == StatePackageManagerSelect {
+		sb.WriteString(OptionDescStyle.Render(fmt.Sprintf("Community norm for %s: %s", m.selectedNorm.Language, m.selectedNorm.Note)) + "\n\n")
 	}
 
 	card := m.renderCard(sb.String())
