@@ -12,10 +12,11 @@ So, I decided to build my own, which is why we now have `go-choose-license`, so 
 don't have decision paralysis when it comes to choosing a license for their next project.
 
 ## How This Program Works
-This program is simple, but genius. It has three options users can choose from. 
+This program is simple, but genius. It has four options users can choose from.
 1) Choose a license based on your preferences via our guided questionnaire.
 2) Choose a license based on the community norms of the programming language you are using for your project.
-3) Use our curated list of licenses to choose from.
+3) Choose a license based on the community norms of your package manager.
+4) Use our curated list of licenses to choose from.
 
 Once you have selected a license, the program will help fill in specific user information for
 the copyright and then add it to your project's repository. 
