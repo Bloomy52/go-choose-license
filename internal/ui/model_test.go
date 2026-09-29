@@ -21,7 +21,7 @@ func TestQuestionnaireNavigation(t *testing.T) {
 
 	// Verify main menu renders header
 	viewStr := model.View()
-	if !strings.Contains(viewStr, "GO LICENSE CHOOSER") {
+	if !strings.Contains(viewStr, "GO CHOOSE YOUR LICENSE") {
 		t.Errorf("Expected view to contain banner header")
 	}
 
@@ -97,5 +97,71 @@ func TestResultCardMaxWidth(t *testing.T) {
 		if w > 60 {
 			t.Errorf("Line width %d exceeds target width 60 in line: %q", w, l)
 		}
+	}
+}
+
+func TestPackageManagerSelection(t *testing.T) {
+	reg, err := license.LoadRegistry()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, norm := range license.GetPackageManagerNorms() {
+		t.Run(norm.Language, func(t *testing.T) {
+			var model tea.Model = ui.InitialModel(reg)
+			press := func(key tea.KeyMsg) { model, _ = model.Update(key) }
+			press(tea.KeyMsg{Type: tea.KeyDown})
+			press(tea.KeyMsg{Type: tea.KeyDown})
+			press(tea.KeyMsg{Type: tea.KeyEnter})
+			press(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(norm.Language)})
+			if !strings.Contains(model.View(), norm.Language) {
+				t.Fatal("Package manager missing from filtered list")
+			}
+			press(tea.KeyMsg{Type: tea.KeyEnter})
+			view := model.View()
+			if !strings.Contains(view, "License Recommendation") || !strings.Contains(view, "Community norm for "+norm.Language) {
+				t.Fatalf("Missing recommendation or community note: %s", view)
+			}
+			for _, id := range norm.LicenseIDs {
+				lic, ok := reg.Get(id)
+				if !ok || !strings.Contains(view, lic.Name) {
+					t.Errorf("Missing recommended license %s", id)
+				}
+			}
+			press(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("v")})
+			press(tea.KeyMsg{Type: tea.KeyEsc})
+			press(tea.KeyMsg{Type: tea.KeyEnter})
+			if !strings.Contains(model.View(), "Generate") {
+				t.Fatal("Cannot reach license generation")
+			}
+			press(tea.KeyMsg{Type: tea.KeyEsc})
+			press(tea.KeyMsg{Type: tea.KeyEsc})
+			if !strings.Contains(model.View(), "Package Manager Norms") || !strings.Contains(model.View(), norm.Language) {
+				t.Fatal("Back navigation lost package manager selection")
+			}
+			press(tea.KeyMsg{Type: tea.KeyEsc})
+			press(tea.KeyMsg{Type: tea.KeyUp})
+			press(tea.KeyMsg{Type: tea.KeyEnter})
+			if !strings.Contains(model.View(), "Python") {
+				t.Fatal("Package manager search leaked into language selection")
+			}
+		})
+	}
+}
+
+func TestPackageManagerEmptySearch(t *testing.T) {
+	reg, err := license.LoadRegistry()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var model tea.Model = ui.InitialModel(reg)
+	for _, key := range []tea.KeyMsg{
+		{Type: tea.KeyDown}, {Type: tea.KeyDown}, {Type: tea.KeyEnter},
+		{Type: tea.KeyDown}, {Type: tea.KeyRunes, Runes: []rune("no-such-package-manager")},
+		{Type: tea.KeyEnter},
+	} {
+		model, _ = model.Update(key)
+	}
+	if !strings.Contains(model.View(), "No matching package managers found.") {
+		t.Fatal("Expected empty search state")
 	}
 }
